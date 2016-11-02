@@ -1,22 +1,22 @@
-DB_USER=${DB_USER:-super}
-DB_PASS=${DB_PASS:-$(pwgen -s -1 16)}
+NEST_DB_USER=${NEST_DB_USER:-admin}
+NEST_DB_PASS=${NEST_DB_PASS:-$(pwgen -s -1 16)}
 
 pre_start_action() {
   # Echo out info to later obtain by running `docker logs container_name`
-  echo "MARIADB_USER=$DB_USER"
-  echo "MARIADB_PASS=$DB_PASS"
-  echo "MARIADB_DATA_DIR=$DATA_DIR"
+  echo "MARIADB_USER=$NEST_DB_USER"
+  echo "MARIADB_PASS=$NEST_DB_PASS"
+  echo "MARIADB_DATA_DIR=$NEST_DATA_DIR"
 
   # test if DATA_DIR has content
-  if [[ ! "$(ls -A $DATA_DIR)" ]]; then
-      echo "Initializing MariaDB at $DATA_DIR"
+  if [[ ! "$(ls -A $NEST_DATA_DIR)" ]]; then
+      echo "Initializing MariaDB at $NEST_DATA_DIR"
       # Copy the data that we generated within the container to the empty DATA_DIR.
-      cp -R /var/lib/mysql/* $DATA_DIR
+      cp -R /var/lib/mysql/* $NEST_DATA_DIR
   fi
 
   # Ensure mysql owns the DATA_DIR
-  chown -R mysql $DATA_DIR
-  chown root $DATA_DIR/debian*.flag
+  chown -R mysql $NEST_DATA_DIR
+  chown root $NEST_DATA_DIR/debian*.flag
 }
 
 post_start_action() {
@@ -29,12 +29,12 @@ post_start_action() {
 
   # Create the superuser.
   mysql -u root <<-EOF
-      DELETE FROM mysql.user WHERE user = '$DB_USER';
+      DELETE FROM mysql.user WHERE user = '$NEST_DB_USER';
       FLUSH PRIVILEGES;
-      CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';
-      GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'localhost' WITH GRANT OPTION;
-      CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';
-      GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'%' WITH GRANT OPTION;
+      CREATE USER '$NEST_DB_USER'@'localhost' IDENTIFIED BY '$NEST_DB_PASS';
+      GRANT ALL PRIVILEGES ON *.* TO '$NEST_DB_USER'@'localhost' WITH GRANT OPTION;
+      CREATE USER '$NEST_DB_USER'@'%' IDENTIFIED BY '$NEST_DB_PASS';
+      GRANT ALL PRIVILEGES ON *.* TO '$NEST_DB_USER'@'%' WITH GRANT OPTION;
 EOF
 
   rm /firstrun
