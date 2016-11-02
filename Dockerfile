@@ -1,7 +1,8 @@
-#MariaDB (https://mariadb.org/)
+FROM phusion/baseimage:0.9.19
 
-FROM phusion/baseimage:0.9.10
-MAINTAINER Ryan Seto <ryanseto@yak.net>
+MAINTAINER nest.yt
+# Based on work by
+# Ryan Seto <ryanseto@yak.net>
 
 # Ensure UTF-8
 RUN locale-gen en_US.UTF-8
@@ -12,7 +13,7 @@ RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
 # Install MariaDB from repository.
 RUN echo "deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu trusty main" > /etc/apt/sources.list.d/mariadb.list && \
     apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes mariadb-server mariadb-server-5.5
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes mariadb-server mariadb-client
 
 # Install other tools.
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y pwgen inotify-tools
