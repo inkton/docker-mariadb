@@ -4,7 +4,7 @@
 # Stop on error
 #set -xv
 
-DATA_DIR=/data
+NEST_DATA_DIR=/data
 
 if [[ -e /firstrun ]]; then
   . /scripts/first_run.sh
