@@ -1,10 +1,10 @@
-USER=${USER:-super}
-PASS=${PASS:-$(pwgen -s -1 16)}
+DB_USER=${DB_USER:-super}
+DB_PASS=${DB_PASS:-$(pwgen -s -1 16)}
 
 pre_start_action() {
   # Echo out info to later obtain by running `docker logs container_name`
-  echo "MARIADB_USER=$USER"
-  echo "MARIADB_PASS=$PASS"
+  echo "MARIADB_USER=$DB_USER"
+  echo "MARIADB_PASS=$DB_PASS"
   echo "MARIADB_DATA_DIR=$DATA_DIR"
 
   # test if DATA_DIR has content
@@ -29,12 +29,12 @@ post_start_action() {
 
   # Create the superuser.
   mysql -u root <<-EOF
-      DELETE FROM mysql.user WHERE user = '$USER';
+      DELETE FROM mysql.user WHERE user = '$DB_USER';
       FLUSH PRIVILEGES;
-      CREATE USER '$USER'@'localhost' IDENTIFIED BY '$PASS';
-      GRANT ALL PRIVILEGES ON *.* TO '$USER'@'localhost' WITH GRANT OPTION;
-      CREATE USER '$USER'@'%' IDENTIFIED BY '$PASS';
-      GRANT ALL PRIVILEGES ON *.* TO '$USER'@'%' WITH GRANT OPTION;
+      CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';
+      GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'localhost' WITH GRANT OPTION;
+      CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';
+      GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'%' WITH GRANT OPTION;
 EOF
 
   rm /firstrun

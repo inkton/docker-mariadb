@@ -1,0 +1,2 @@
+#!/bin/sh
+exec php -S 0.0.0.0:8200 -file /etc/service/adminer/index.php >> /var/log/adminer.log 2>&1
