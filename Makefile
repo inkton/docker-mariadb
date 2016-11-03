@@ -3,8 +3,8 @@ DOCKER_USER=paintedfox
 
 # Change this to suit your needs.
 NAME:=mariadb
-DB_USER:=super
-DB_PASS:=super
+NEST_DB_USER:=super
+NEST_DB_PASS:=super
 #DB_PASS:=$(shell pwgen -s -1 16)
 DATA_DIR:=/tmp/mariadb
 PORT:=127.0.0.1:3306
@@ -12,7 +12,7 @@ PORT:=127.0.0.1:3306
 RUNNING:=$(shell docker ps | grep $(NAME) | cut -f 1 -d ' ')
 ALL:=$(shell docker ps -a | grep $(NAME) | cut -f 1 -d ' ')
 #DOCKER_RUN_COMMON=--name="$(NAME)" -p $(PORT):3306 -v $(DATA_DIR):/data -e USER="$(USER)" -e PASS="$(PASS)" $(DOCKER_USER)/mariadb
-DOCKER_RUN_COMMON=--name="$(NAME)" -v $(DATA_DIR):/data -e DB_USER="$(DB_USER)" -e DB_PASS="$(DB_PASS)" $(DOCKER_USER)/mariadb
+DOCKER_RUN_COMMON=--name="$(NAME)" -v $(DATA_DIR):/data -e NEST_DB_USER="$(NEST_DB_USER)" -e NEST_DB_PASS="$(NEST_DB_PASS)" mariadb 
 
 all: build
 
