@@ -14,8 +14,10 @@ fi
 
 wait_for_mysql_and_run_post_start_action() {
   # Wait for mysql to finish starting up first.
-  while [[ ! -e /var/run/mysqld/mysqld.sock ]] ; do
-      	inotifywait -q -e create /var/run/mysqld/mysqld.sock >> /dev/null
+  until [ -f /var/run/mysqld/mysqld.sock ]
+  do
+      echo waiting for mysql ...
+      sleep 5
   done
 
   post_start_action
