@@ -1,5 +1,6 @@
-NEST_DB_USER=${NEST_DB_USER:-admin}
-NEST_DB_PASS=${NEST_DB_PASS:-$(pwgen -s -1 16)}
+
+NEST_DB_PASS=$(jq -r ".services_password" /var/app/app.json)
+NEST_DB_USER=$(jq -r ".tag" /var/app/app.json)
 
 pre_start_action() {
   # Echo out info to later obtain by running `docker logs container_name`
