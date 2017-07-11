@@ -7,7 +7,8 @@ MAINTAINER nest.yt
 ADD scripts /scripts
 ADD adminer /etc/service/adminer
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y pwgen inotify-tools php mariadb-server mariadb-client && \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+	apt-get install -y pwgen inotify-tools php mariadb-server mariadb-client && \
 	apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
 	sed -i -e 's/^datadir\s*=.*/datadir = \/data/' /etc/mysql/my.cnf && \
 	sed -i -e 's/^bind-address/#bind-address/' /etc/mysql/my.cnf && \
