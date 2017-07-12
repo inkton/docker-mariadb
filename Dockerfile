@@ -4,6 +4,8 @@ FROM buildpack-deps:jessie-scm
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
 
+COPY run.sh /
+
 # add gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
 RUN set -x \
@@ -88,8 +90,9 @@ RUN { \
 	&& rm -rf /var/lib/mysql && mkdir -p /var/lib/mysql /var/run/mysqld \
 	&& chown -R mysql:mysql /var/lib/mysql /var/run/mysqld \
 # ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
-	&& chmod 777 /var/run/mysqld
-
+	&& chmod 777 /var/run/mysqld \
+	&& chmod +x /run.sh
+	
 # comment out a few problematic configuration values
 # don't reverse lookup hostnames, they are usually another container
 RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf \
@@ -98,7 +101,6 @@ RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf \
 
 VOLUME /var/lib/mysql
 
-COPY run.sh /
 ENTRYPOINT ["/run.sh"]
 
 EXPOSE 3306
