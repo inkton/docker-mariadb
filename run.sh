@@ -2,10 +2,10 @@
 set -eo pipefail
 shopt -s nullglob
 
-MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-$(jq -r ".services_password" /var/app/app.json)}
-MYSQL_PASSWORD=${MYSQL_PASSWORD:-$(jq -r ".services_password" /var/app/app.json)}
-MYSQL_DATABASE=${MYSQL_DATABASE:-$(jq -r ".tag" /var/app/app.json)}
-MYSQL_USER=${MYSQL_USER:-$(jq -r ".tag" /var/app/app.json)}
+MYSQL_ROOT_PASSWORD=${NEST_APP_TAG}
+MYSQL_PASSWORD=${NEST_SERVICES_PASSWORD}
+MYSQL_DATABASE=${NEST_APP_TAG}
+MYSQL_USER=${NEST_APP_TAG}
 
 # if command starts with an option, prepend mysqld
 if [ "${1:0:1}" = '-' ]; then
