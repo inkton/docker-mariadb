@@ -1,4 +1,7 @@
 #!/bin/bash
+
+php -S localhost:80 -t /adminer/ &
+
 set -eo pipefail
 shopt -s nullglob
 
