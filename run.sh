@@ -1,9 +1,8 @@
 #!/bin/bash
-
-php -S localhost:80 -t /adminer/ &
-
 set -eo pipefail
 shopt -s nullglob
+
+php -S 0.0.0.0:80 -t /adminer/ &
 
 MYSQL_ROOT_PASSWORD=${NEST_APP_TAG}
 MYSQL_PASSWORD=${NEST_SERVICES_PASSWORD}
